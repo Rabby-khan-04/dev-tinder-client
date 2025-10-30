@@ -1,7 +1,13 @@
+import { Outlet } from "react-router";
+import Navbar from "./components/shared/Navbar";
+import Footer from "./components/shared/Footer";
+
 function App() {
   return (
     <>
-      <h1>Hello World</h1>
+      <Navbar />
+      <Outlet />
+      <Footer />
     </>
   );
 }

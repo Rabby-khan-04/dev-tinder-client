@@ -3,6 +3,7 @@ import axiosInstance from "../utils/axiosInstance";
 import { useDispatch } from "react-redux";
 import { addUser } from "../utils/userSlice";
 import { Link, useNavigate } from "react-router";
+import validator from "validator";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -16,15 +17,21 @@ const Login = () => {
     if (!email) toast.error("Email is required");
     if (!password) toast.error("Password is required");
 
+    if (!validator.isEmail(email)) return toast.error("Invalid Email!!");
     try {
-      const res = await axiosInstance.post("/auth/login", { email, password });
+      const res = await axiosInstance.post("/auth/login", {
+        email,
+        password,
+      });
       if (res.data) {
         dispatch(addUser(res.data?.data));
         toast.success(res.data.message);
         navigate("/");
       }
-    } catch (error) {
-      toast.error(error.message);
+    } catch (err) {
+      toast.error(
+        err?.response?.data?.message || err.message || "Something went wrong!!"
+      );
     }
   };
 
